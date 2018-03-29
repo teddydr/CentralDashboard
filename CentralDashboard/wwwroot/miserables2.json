@@ -1,0 +1,32 @@
+{
+  "nodes": [
+			{"id":"COURIERTRANSACTION","group":1},
+			{"id":"RAWTRANSACTION","group":2},
+			{"id":"FORRE-ASSIGNMENT","group":3},
+			{"id":"OUTSTANDING","group":4},
+			{"id":"FORCHANNELASSIGNMENT","group":5},
+			{"id":"CHANNELASSIGNED","group":7},
+			{"id":"FORCOURIERASSIGNMENT","group":9},
+			{"id":"FORDISPOSITION","group":10},
+			{"id":"CREDITED","group":11},
+			{"id":"HANDOFF","group":12},
+			{"id":"FORCOURIERACKNOWLEDGEMENT","group":13}
+
+],
+
+ "links": [
+			{"source":"COURIERTRANSACTION", "target": "OUTSTANDING", "value": 3},
+			{"source":"RAWTRANSACTION", "target": "OUTSTANDING", "value": 3},
+			{"source":"FORRE-ASSIGNMENT", "target": "FORCHANNELASSIGNMENT", "value": 3},
+			{"source":"OUTSTANDING", "target": "FORCHANNELASSIGNMENT", "value": 3},
+			{"source":"FORCHANNELASSIGNMENT", "target": "FORDISPOSITION", "value": 3},
+			{"source":"FORCHANNELASSIGNMENT", "target": "CREDITED", "value": 3},
+			{"source":"FORCHANNELASSIGNMENT", "target": "FORCOURIERASSIGNMENT", "value": 3},
+			{"source":"FORCHANNELASSIGNMENT", "target": "HANDOFF", "value": 3},
+			{"source":"CHANNELASSIGNED", "target": "CHANNELASSIGNED", "value": 3},
+			{"source":"FORCOURIERASSIGNMENT", "target": "FORRE-ASSIGNMENT", "value": 3},
+			{"source":"FORCOURIERASSIGNMENT", "target": "FORCOURIERACKNOWLEDGEMENT", "value": 3}
+   
+
+  ]
+}

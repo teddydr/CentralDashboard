@@ -1,0 +1,18 @@
+{
+  "nodes": [
+    {"id": "state1", "group": 1},
+    {"id": "state2", "group": 2},
+    {"id": "state3", "group": 3},
+    {"id": "state4", "group": 4}
+
+  ],
+  "links": [
+    {"source": "state1", "target": "state2", "value": 1},
+    {"source": "state2", "target": "state3", "value": 1},
+    {"source": "state3", "target": "state4", "value": 1}
+   
+ 
+    
+
+  ]
+}
