@@ -26,8 +26,10 @@ namespace CentralDashboard
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<LogContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
-            services.AddScoped(typeof(IDataRepository<LogDB, long>), typeof(LogsManager));
+             services.AddDbContext<LogContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            // services.AddScoped(typeof(IDataRepository<LogDB, long>), typeof(LogsManager));
+
+           
 
 
             services.AddMvc();
