@@ -9,7 +9,7 @@ namespace CentralDashboard.Controllers
 {
   
     [Produces("application/json")]
-    [Route("api")]
+    [Route("[controller]/[action]")]
     public class ApiController : Controller
     {
 
@@ -38,14 +38,19 @@ namespace CentralDashboard.Controllers
         [HttpGet ("{LastRequest}")]
         public IEnumerable<LogDB> GetLatest(DateTime LastRequest)
         {
-            /*var query = _context.LogsDB.AsQueryable();
-            query = query.Where(o => o.DateStamp > LastRequest);
-            var  querylog = ((ObjectQuery<querylog>)query).ToList();
-            return _context.LogsDB.ToList(); */
-
+            
             return _context.LogsDB.Where(o => o.DateStamp > LastRequest).ToList();
 
         }
+
+        
+        [HttpGet]
+        public IEnumerable<LogSum> GetSummary()
+        {
+
+            return _context.LogSum.ToList();
+
+        } 
 
     }
 

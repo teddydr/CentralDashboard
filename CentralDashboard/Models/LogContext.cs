@@ -13,7 +13,8 @@ namespace CentralDashboard.Models
         {
         }
         public DbSet<LogDB> LogsDB { get; set; }
-        
+        public DbSet<LogSum> LogSum { get; set; }
+
 
     }
 }
