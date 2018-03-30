@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CentralDashboard.Models;
+using Microsoft.EntityFrameworkCore;
+using CentralDashboard.Models.Repository;
+using CentralDashboard.Models.DataManager;
 
 namespace CentralDashboard
 {
@@ -21,6 +25,11 @@ namespace CentralDashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddDbContext<LogContext>(opts => opts.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddScoped(typeof(IDataRepository<LogDB, long>), typeof(LogsManager));
+
+
             services.AddMvc();
         }
 
