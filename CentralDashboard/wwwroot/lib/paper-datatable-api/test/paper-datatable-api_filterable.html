@@ -1,0 +1,134 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>paper-datatable-api test</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../paper-datatable-api.html">
+    <link rel="import" href="../paper-datatable-api-column.html">
+  </head>
+  <body>
+
+    <test-fixture id="filterable">
+      <template>
+        <paper-datatable-api filters>
+          <paper-datatable-api-column filter header="Fruit" property="fruit">
+            <template>
+              <span>[[value]]</span>
+            </template>
+          </paper-datatable-api-column>
+          <paper-datatable-api-column header="Color" property="color">
+            <template>
+              <div>[[value]]</div>
+            </template>
+          </paper-datatable-api-column>
+          <paper-datatable-api-column header="Weight" property="weight" choices='[{"label": 1, "key": 1}, {"label": 2, "key": 2}]'>
+            <template>
+              <div>[[value]]</div>
+            </template>
+          </paper-datatable-api-column>
+        </paper-datatable-api>
+      </template>
+    </test-fixture>
+
+    <script>
+      var data = [
+{
+  "color": "yellow",
+  "fruit": "banana",
+  "weight": "1"
+},
+{
+  "fruit": "apple",
+  "color": "green",
+  "weight": "2"
+}
+      ];
+
+      suite('paper-datatable-api', function() {
+
+        test('Filters are displayed', function(done) {
+          var paperDatatableApi = fixture('filterable');
+          paperDatatableApi.data = data;
+
+          flush(function() {
+            let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content');
+            let filterButton = Polymer.dom(thContent.root).querySelector('div paper-icon-button[icon="paper-datatable-api-icons:search"]');
+            filterButton.click();
+
+            flush(function() {
+              let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content');
+              var input = Polymer.dom(thContent.root).querySelector('paper-input');
+              assert.isTrue(input.focused);
+              done();
+            });
+          });
+        });
+
+        test('Filters are displayed when I click on header', function(done) {
+          var paperDatatableApi = fixture('filterable');
+          paperDatatableApi.data = data;
+
+          flush(function() {
+            let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content');
+            let filterDiv = Polymer.dom(thContent.root).querySelector('div div');
+            filterDiv.click();
+
+            flush(function() {
+              let thContent = Polymer.dom(paperDatatableApi.root).querySelector('paper-datatable-api-th-content');
+              var input = Polymer.dom(thContent.root).querySelector('paper-input');
+              assert.isTrue(input.focused);
+              done();
+            });
+          });
+        });
+
+        test('Filters are not displayed if filter is deactivated', function(done) {
+          var paperDatatableApi = fixture('filterable');
+          paperDatatableApi.data = data;
+
+          flush(function() {
+            let thsContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('paper-datatable-api-th-content');
+            let secondDiv = Polymer.dom(thsContent[1].root).querySelector('div div');
+            secondDiv.click();
+
+            flush(function() {
+              let thsContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('paper-datatable-api-th-content');
+              let secondDivForInput = Polymer.dom(thsContent[1].root).querySelector('paper-input');
+              assert.isNull(secondDivForInput);
+              done();
+            });
+          });
+        });
+
+        test('Filters with choice are displayed', function(done) {
+          var paperDatatableApi = fixture('filterable');
+          paperDatatableApi.data = data;
+
+          let i = 0;
+
+          paperDatatableApi.addEventListener('filter', event => {
+            assert.equal(event.detail.filter.property, 'weight');
+            i += 1;
+            if (i === 1) {
+              assert.equal(event.detail.filter.value[0], 1);
+            }
+            done();
+          });
+          flush(function() {
+            paperDatatableApi.async(() => {
+              let thContent = Polymer.dom(paperDatatableApi.root).querySelectorAll('paper-datatable-api-th-content');
+              var paperMenu = Polymer.dom(thContent[2].root).querySelector('paper-listbox');
+              paperMenu.select(1);
+            }, 100);
+          });
+        });
+
+      });
+    </script>
+  </body>
+</html>

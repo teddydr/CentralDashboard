@@ -3,48 +3,215 @@
 }
 <!DOCTYPE html>
 <meta charset="utf-8">
-<style>
+
+<script src="~/lib/webcomponentsjs/webcomponents-lite.min.js"></script>
+<script src="~/lib/d3.v4.min.js"></script>
+<link rel="import" href="~/lib/iron-ajax/iron-ajax.html">
+
+<link rel="import" href="~/lib/polymer/polymer.html" />
+<link rel="import" href="~/lib/paper-input-master/paper-input.html" />
+<link rel="import" href="~/lib/paper-input-master/paper-input-container.html" />
+<link rel="import" href="~/lib/iron-icon/iron-icon.html" />
+<link rel="import" href="~/lib/iron-input/iron-input.html" />
+<link rel="import" href="~/lib/paper-button/paper-button.html" />
+<link rel="import" href="~/lib/paper-listbox/paper-listbox.html" />
+<link rel="import" href="~/lib/paper-material/paper-material.html" />
+<link rel="import" href="~/lib/iron-image/iron-image.html" />
+<link rel="import" href="~/lib/iron-resizable-behavior/iron-resizable-behavior.html" />
+<link rel="import" href="~/lib/paper-checkbox/paper-checkbox.html" />
+<link rel="import" href="~/lib/iron-image/iron-image.html">
+<link rel="import" href="~/lib/vaadin-grid/all-imports.html" />
+<link rel="import" href="~/lib/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="~/lib/iron-scroll-target-behavior/iron-scroll-target-behavior.html">
+
+<link rel="import" href="~/lib/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="~/lib/highcharts-chart/highcharts-chart.html">
+
+
+
+<style is="custom-style" include="iron-flex">
+
+    body {
+        margin: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        background-color: #BBDEFB;
+    }
+
     .links line {
-        stroke: #999;
+        stroke: #212121;
         stroke-opacity: 0.6;
     }
 
     .nodes circle {
         stroke: #fff;
-        stroke-width: 1.5px;
+        stroke-width: 1px;
     }
 
-    text {
-        font-family: sans-serif;
-        font-size: 8px;
+   
+
+    .darkform {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        background-color: #2196F3;
     }
+
+    .lightform {
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        background-color: #FFFFFF;
+        
+
+    }
+
+    h3 {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background-color: #1976D2;
+        color: #FFFFFF;
+        text-align: center;
+        margin: 0;
+        height: auto;
+    }
+
+    hr {
+        display: block;
+        margin-top: 0.2em;
+        margin-bottom: 0.2em;
+        margin-left: auto;
+        margin-right: auto;
+        border-width: 0px;
+        /*border:0;
+            border-bottom:1px solid;
+            clear:both;
+            display:block;
+            height:0;
+            margin: 0 auto 50px auto;
+            padding-top:50px;
+            max-width: 220px;
+            width:100%;*/
+    }
+
+    paper-button {
+        background: #FFC107;
+        float: right;
+        margin-top: 20px;
+        
+    }
+
 </style>
 <!--svg width="960" height="600"></svg-->
-<script src="~/lib/webcomponentsjs/webcomponents-lite.min.js"></script>
-<link rel="import" href="~/lib/iron-ajax/iron-ajax.html">
-<svg width="960" height="600"></svg>
-<script src="~/lib/d3.v4.min.js"></script>
 
-<div>
-    <button type="button" onclick="myAnimate()">Animate</button>
-    <button type="button" onclick="myFunction()">GetAjax</button>
+<h3 id="titleid">
+    Remittance System Dashboard (Stopped)
+</h3>
 
+<div class="darkform">
+    
+    <div class="layout horizontal">
+        <div style="width: 50%;">
+            <svg width="600" height="390"></svg>
+            <template is="dom-bind" id="ajx">
+                <iron-ajax auto
+                           id="ajax"
+                           params='{"LastRequest":"2018-03-30T00:03:37.0719975"}'
+                           method="POST"
+                           url="api/getlatest"
+                           handle-as="json">
+                    
+                </iron-ajax>
+                
+             </template>
 </div>
+        <div style="width: 50%; margin-top: 20px; margin-right: 20px; box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);">
 
-<iron-ajax auto
-           id="ajax"
-           url="/api"
-           params=""
-           handle-as="json"
-           on-response="handleResponse"
-           debounce-duration="300"
-           last-response="{{jsonresp}}">
+            <template is="dom-bind" id="app">
+                <iron-ajax auto
+                           id="ajaxsum"
+                           url="api/getsummary"
+                           params=""
+                           handle-as="json"
+                           last-response="{{jsonsum}}">
 
-</iron-ajax>
+                </iron-ajax>
+                <vaadin-grid aria-label="Basic Binding Example" items="[[jsonsum]]">
+                    <vaadin-grid-column width="60px" flex-grow="0">
+                        <template class="header">
+                            #
+                        </template>
+                        <template>
+                            [[index]]
+                        </template>
+                        <!-- If necessary, the footer could be set using <template class="footer"> -->
+                        <template class="footer">
+                            #
+                        </template>
+                    </vaadin-grid-column>
+                    <vaadin-grid-column>
+                        <template class="header">
+                            <span draggable="true">
+                                Topic Name
+                            </span>
+                        </template>
+                        <template>
+                            <span draggable="true">
+                                [[item.topicName]]
+                            </span>
+                        </template>
+                        <template class="footer">
+                            Topic Name
+                        </template>
+
+                    </vaadin-grid-column>
+
+                    <vaadin-grid-column>
+                        <template class="header">
+                            Msg Count
+                        </template>
+                        <template>
+                            [[item.topicCount]]
+                        </template>
+                        <template class="footer">
+                            Msg Count
+                        </template>
+                    </vaadin-grid-column>
+
+                    <vaadin-grid-column>
+                        <template class="header">
+                            Last Data
+                        </template>
+                        <template>
+                            [[item.lastData]]
+                        </template>
+                        <template class="footer">
+                            Last Data
+                        </template>
+
+                    </vaadin-grid-column>
+
+                </vaadin-grid>
+            </template>
+
+        </div>
+
+    </div>
+    <br />
+
+   
+</div>
+<hr />
+<div class="lightform">
+    <highcharts-chart id="splinechart" type="spline" data='[[0,0],[1,7],[2,1],[3,6],[4,8],[5,6]]' title="Throughput" x-zoom x-label="Iterations" y-label="Number of transactions"></highcharts-chart>
+</div>
+<paper-button id ="buttonid" raised onclick="myFunction()"> Start Monitoring </paper-button>
 
 
 
 <script>
+
+    var ccount = 5;
+    var monitoring = false;
+    var timeID1 = 0;
+    var timeID2 = 0;
+    var timeID3 = 0;
 
     var svg = d3.select("svg"),
         width = +svg.attr("width"),
@@ -53,7 +220,7 @@
     var color = d3.scaleOrdinal(d3.schemeCategory20);
 
     var linkDistanceVariable = 50;
-    
+
     var simulation = d3.forceSimulation()
         .force("link", d3.forceLink().id(function (d) { return d.id; }).distance(200))
         .force("charge", d3.forceManyBody())
@@ -93,7 +260,7 @@
             .enter().append("g")
 
         var circles = node.append("circle")
-            .attr("r", 20)
+            .attr("r", 15)
             .attr("fill", function (d) { return color(d.group); })
             .attr("id", function (d) { return d.id; })
             .call(d3.drag()
@@ -107,7 +274,7 @@
             })
             .attr('x', 20)
             .attr('y', 3)
-            
+
 
         node.append("title")
             .text(function (d) { return d.id; });
@@ -152,36 +319,78 @@
         d.fy = null;
     }
 
- 
+
 
     function UpdateState(s, x)
     {
 
-        d3.select(s).attr("r", x); 
-    
+        d3.select(s).attr("r", x);
+
 
     }
 
     function SubmitReq() {
         var ajaxresp = document.getElementById('ajax');
-        
+        var linechart = document.getElementById('splinechart');
+        var newparam = { "LastRequest": "i" };
+        var d = new Date();
         var i;
+
+        //console.log("initial => " + JSON.stringify(ajaxresp.params));
         ajaxresp.generateRequest();
 
-        if (ajaxresp.lastResponse.length != null) {
+        
+        if (ajaxresp.lastResponse != null && ajaxresp.lastResponse.length > 0 ) {
             for (i = 0; i < ajaxresp.lastResponse.length; i++) {
-                UpdateState("#" + ajaxresp.lastResponse[i].topicName, 25);
+                UpdateState("#" + ajaxresp.lastResponse[i].topicName, 20);
             }
-        } else { 
+            newparam.LastRequest = ajaxresp.lastResponse[i - 1].dateStamp;
+            d = Date(ajaxresp.lastResponse[i - 1].dateStamp);
+            ccount += 1;
+            linechart.pushData(ccount, i, 0);
+            ajaxresp.params = newparam;
+            //ajaxresp.params = '{"LastRequest":"' + ajaxresp.lastResponse[i-1].dateStamp +'"}';
+            //console.log("revised => " + JSON.stringify(ajaxresp.params));
+        } else {
             console.log("Nothing received");
         }
-           
- 
-        
+
+
+
     };
 
+    function GetNewData() {
+        var ajaxsum = document.getElementById('ajaxsum');
+
+        ajaxsum.generateRequest();
+    }
+
     function myFunction() {
-        setInterval(function () { SubmitReq(); }, 2000);
-        setInterval(function () { d3.selectAll("circle").attr("r", 20); }, 3000);
-    }; 
+        var hrvar = document.getElementById('titleid');
+        var btnvar = document.getElementById('buttonid');
+
+        if (monitoring) {
+            clearInterval(timerID1);
+            clearInterval(timerID2);
+            clearInterval(timerID3);
+            hrvar.innerHTML = "Remittance System Dashboard (Stopped)";
+            btnvar.innerHTML = "Start Monitoring";
+
+        }
+        else {
+            timerID1 = setInterval(function () { SubmitReq(); }, 1000);
+            timerID2 = setInterval(function () { d3.selectAll("circle").attr("r", 15); }, 1300);
+            timerID3 = setInterval(function () { GetNewData(); }, 1000);
+            hrvar.innerHTML = "Remittance System Dashboard (Monitoring)";
+            btnvar.innerHTML = "Stop Monitoring";
+        }
+
+        monitoring = !monitoring;
+    };
+
+
+
+
+   
 </script>
+

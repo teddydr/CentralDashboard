@@ -1,0 +1,32 @@
+{
+  "name": "hello-world-polymer",
+  "version": "1.1.0",
+  "description": "Web Component example using Polymer",
+  "authors": [
+    "WebComponents.org"
+  ],
+  "license": "MIT",
+  "main": "hello-world.html",
+  "keywords": [
+    "polymer",
+    "web-components"
+  ],
+  "ignore": [
+    "**/.*",
+    "bower_components"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.9.0"
+  },
+  "homepage": "https://github.com/webcomponents/hello-world-polymer",
+  "_release": "1.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.0",
+    "commit": "bfc384ab5c98f013be2272148b8d6c2e42258d49"
+  },
+  "_source": "https://github.com/webcomponents/hello-world-polymer.git",
+  "_target": "v1.1.0",
+  "_originalSource": "hello-world-polymer",
+  "_direct": true
+}

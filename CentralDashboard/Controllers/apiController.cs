@@ -35,10 +35,10 @@ namespace CentralDashboard.Controllers
         }
 
 
-        [HttpGet ("{LastRequest}")]
+        [HttpPost]
         public IEnumerable<LogDB> GetLatest(DateTime LastRequest)
         {
-            
+
             return _context.LogsDB.Where(o => o.DateStamp > LastRequest).ToList();
 
         }
